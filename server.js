@@ -1,32 +1,15 @@
 'use strict';
+const express = require('express');
+const app = express();
 
-// make a variable called express to use the express library
-const express = require('express'); //npm install express
+const PORT = process.env.PORT || 3000;
 
-// server has all the Express properities and methods
-const server = express();
+app.use(express.static('./public'));
 
-
-const PORT =  process.env.PORT || 3010;
-
-// the server is ready for listening
-server.listen(PORT, ()=>{
-  console.log(`listening to ${PORT}`);
+app.get('/hello', (request, response) => {
+  response.status(200).send('Hello');
 });
 
+app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
 
-// localhost:3010/./public ->http request (/test->route)
-server.get('/test',(request,response)=>{
-  response.send('Your server is alive!!');
-// console.log(request);
-});
-
-server.get('/',(req,res)=>{
-  res.send('you are in the root');
-});
-
-server.get('/data',(req,res)=>{
-  res.send('you are in the data page');
-});
-
- server.use(express.static('./public'))
+app.listen(PORT,() => console.log(`Listening on port ${PORT}`));
